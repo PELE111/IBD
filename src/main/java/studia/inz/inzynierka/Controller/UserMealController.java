@@ -3,6 +3,7 @@ package studia.inz.inzynierka.Controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import studia.inz.inzynierka.ApiRequest.AddMealToUser;
 import studia.inz.inzynierka.Entites.ClientEntity;
 import studia.inz.inzynierka.Entites.UserMealEntity;
 
@@ -23,5 +24,8 @@ public class UserMealController {
         return userMealService.getUserMeals(client);
     }
 
-
+    @PostMapping(value = "/addmeal")
+    public ResponseEntity<UserMealEntity> addMealToUser(@RequestBody AddMealToUser addMealToUser){
+        return userMealService.addMealToUser(addMealToUser);
+    }
 }

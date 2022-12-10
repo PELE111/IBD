@@ -99,6 +99,8 @@ public class DietService {
 
             ClientEntity client =  dietRepository.findById(diet.getDietId()).get().getClientID();
 
+            if(diet.getClientId().getClientId() != client.getClientId()) return ResponseEntity.status(HttpStatus.CONFLICT).body(diet);
+
             Optional <DietEntity> diet1 =  dietRepository.findOne(
 
                     where(
