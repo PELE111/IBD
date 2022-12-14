@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class ClientEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "client_id")
+    @Column(name = "client_id",unique = true)
     private int clientId;
 
     @Column(name = "login")

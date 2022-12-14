@@ -16,11 +16,15 @@ import javax.persistence.*;
 public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_id", nullable = false)
+    @Column(name = "product_id", nullable = false, unique = true)
     private int productId;
 
     @Column(name = "name")
     String name;
+
+    @Column(name = "diabetes")
+    boolean diabetes;
+
 
     /*
     @OneToOne

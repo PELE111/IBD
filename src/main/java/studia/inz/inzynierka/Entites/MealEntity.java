@@ -15,10 +15,14 @@ import javax.persistence.*;
 @Table(name="Meal")
 public class MealEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "meal_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "meal_id", nullable = false, unique = true)
     private int mealId;
 
     @Column(name = "name")
     String name;
+
+    @Column(name = "diabetes")
+    boolean diabetes;
+
 }

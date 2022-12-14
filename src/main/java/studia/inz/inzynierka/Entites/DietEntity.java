@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class DietEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "diet_id")
+    @Column(name = "diet_id", unique = true)
     private Integer dietId;
 
     @ManyToOne

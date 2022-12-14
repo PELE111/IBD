@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import studia.inz.inzynierka.ApiRequest.CreateMeal;
 import studia.inz.inzynierka.ApiRequest.Ingredient;
+import studia.inz.inzynierka.ApiRequest.MealFilter;
 import studia.inz.inzynierka.Entites.MealEntity;
 import studia.inz.inzynierka.Service.MealService;
 
@@ -21,6 +22,11 @@ public class MealController {
     @GetMapping(value = "/all")
     public ResponseEntity<List<MealEntity>> getAll(){
         return mealService.getAll();
+    }
+
+    @PostMapping(value = "/filter")
+    public ResponseEntity<List<MealEntity>> getAll(@RequestBody MealFilter mealFilter){
+        return mealService.getFiltered(mealFilter);
     }
 
     @PostMapping(value = "/create")

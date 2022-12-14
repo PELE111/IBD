@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class ProductSpecEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_spec_id", nullable = false)
+    @Column(name = "product_spec_id", nullable = false, unique = true)
     private int productSpecId;
 
     @ManyToOne

@@ -18,7 +18,7 @@ import java.sql.Date;
 public class UserMealEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_meal_id", nullable = false)
+    @Column(name = "user_meal_id", nullable = false, unique = true)
     private int userMealId;
 
 

@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class MealIngredientsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "meal_ingredients_id", nullable = false)
+    @Column(name = "meal_ingredients_id", nullable = false, unique = true)
     private int mealIngredientsId;
 
     @ManyToOne
