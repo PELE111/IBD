@@ -8,4 +8,5 @@ import studia.inz.inzynierka.Entites.ClientEntity;
 @Repository
 public interface ClientRepository extends JpaRepository<ClientEntity, Integer>, JpaSpecificationExecutor {
     ClientEntity findByLogin(String login);
+    Boolean existsByLogin(String login);
 }

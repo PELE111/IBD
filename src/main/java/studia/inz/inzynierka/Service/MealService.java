@@ -29,8 +29,8 @@ import static org.springframework.data.jpa.domain.Specification.where;
 public class MealService {
     final private MealRepository mealRepository;
     final private ProductRepository productRepository;
-    final private MealIngredientsRepository mealIngredientsRepository;
     final private ProductSpecRepository productSpecRepository;
+    final private MealIngredientsRepository mealIngredientsRepository;
 
     public ResponseEntity<List<MealEntity>> getAll(){
         List<MealEntity> meals = mealRepository.findAll();
@@ -66,7 +66,7 @@ public class MealService {
         for (Ingredient ingredient: createMeal.getIngredients()) {
             MealIngredientsEntity mealIngredientsEntity = new MealIngredientsEntity();
             mealIngredientsEntity.setMealId(mealEntity);
-            mealIngredientsEntity.setProduct(productRepository.findById(ingredient.getProductId()).get());
+            mealIngredientsEntity.setProductSpec(productSpecRepository.findById(ingredient.getProductSpecId()).get());
             mealIngredientsEntity.setAmount(ingredient.getAmount());
             mealIngredientsRepository.save(mealIngredientsEntity);
             mealIngredientsEntities.add(mealIngredientsEntity);
@@ -78,7 +78,7 @@ public class MealService {
 
     public boolean isDiabetes(MealEntity mealEntity, List<MealIngredientsEntity> mealIngredientsEntities){
         for (MealIngredientsEntity ingredient : mealIngredientsEntities) {
-            if(ingredient.getProduct().isDiabetes()) return true;
+            if(ingredient.getProductSpec().getProduct().isDiabetes()) return true;
         }
         return false;
     }

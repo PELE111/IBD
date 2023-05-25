@@ -4,6 +4,7 @@ package studia.inz.inzynierka.Controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import studia.inz.inzynierka.DTO.MealIngredientsDto;
 import studia.inz.inzynierka.Entites.MealEntity;
 import studia.inz.inzynierka.Entites.MealIngredientsEntity;
 import studia.inz.inzynierka.Service.MealIngredientsService;
@@ -19,7 +20,7 @@ public class MealIngredientsController {
     private final MealIngredientsService mealIngredientsService;
 
     @PostMapping(value = "/ingredients")
-    public ResponseEntity<List<MealIngredientsEntity>> getMealIngreients(@RequestBody MealEntity meal){
+    public ResponseEntity<List<MealIngredientsDto>> getMealIngredients(@RequestBody MealEntity meal){
         return mealIngredientsService.getMealProducts(meal);
     }
 }

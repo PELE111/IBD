@@ -5,14 +5,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import studia.inz.inzynierka.Entites.MealEntity;
 
-import javax.persistence.Entity;
+import java.sql.Date;
 
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ClientDTO {
-    String login;
-    String password;
+public class UserMealsDTO {
+
+    private int userMealId;
+    Date date;
+    MealEntity meal;
 }

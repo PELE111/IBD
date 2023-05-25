@@ -24,8 +24,8 @@ public class MealIngredientsEntity {
     MealEntity mealId;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
-    ProductEntity product;
+    @JoinColumn(name = "product_spec_id")
+    ProductSpecEntity productSpec;
 
     @Column(name = "amount")
     float amount;

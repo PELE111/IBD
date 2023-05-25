@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Builder
 @Data
@@ -25,4 +26,7 @@ public class MealEntity {
     @Column(name = "diabetes")
     boolean diabetes;
 
+   // @OneToMany
+   // @JoinColumn(name = "meal_id")
+   // List<MealIngredientsEntity> mealIngredients;
 }

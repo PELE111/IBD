@@ -4,10 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import studia.inz.inzynierka.Entites.ClientEntity;
-
-import javax.persistence.Entity;
-import javax.persistence.Table;
 
 @Builder
 @Data
@@ -15,7 +11,7 @@ import javax.persistence.Table;
 @AllArgsConstructor
 public class DietDTO {
     private Integer dietId;
-    private ClientDTO clientId;
+    private String login;
     int dailyCalories;
     boolean diabetes;
     boolean active;

@@ -3,12 +3,10 @@ package studia.inz.inzynierka.Service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import studia.inz.inzynierka.ApiRequest.CreateDiet;
-import studia.inz.inzynierka.DTO.ClientDTO;
 import studia.inz.inzynierka.DTO.DietDTO;
 import studia.inz.inzynierka.Entites.ClientEntity;
 import studia.inz.inzynierka.Entites.ClientEntity_;
@@ -19,8 +17,6 @@ import studia.inz.inzynierka.Mapper.DietMapper;
 import studia.inz.inzynierka.Repos.ClientRepository;
 import studia.inz.inzynierka.Repos.DietRepository;
 
-import javax.persistence.criteria.Predicate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,25 +46,24 @@ public class DietService {
         return ResponseEntity.status(HttpStatus.CREATED).body(diet);
     }
 
-    public ResponseEntity<List<DietEntity>> userDiet(ClientEntity client){
+    public ResponseEntity<List<DietEntity>> userDiet(String login){
 
        List<DietEntity> diet =  dietRepository.findAll(
                where(
                        (root, query, criteriaBuilder) -> {
-                       return criteriaBuilder.equal(criteriaBuilder.lower(root.get(DietEntity_.CLIENT_ID).get(ClientEntity_.LOGIN)), client.getLogin().toLowerCase());
+                       return criteriaBuilder.equal(criteriaBuilder.lower(root.get(DietEntity_.CLIENT_ID).get(ClientEntity_.LOGIN)), login.toLowerCase());
                        }
                )).stream().toList();
         return ResponseEntity.ok(diet);
     }
 
-    public ResponseEntity<DietDTO> activeDiet(ClientDTO clientDTO){
+    public ResponseEntity<DietDTO> activeDiet(String login){
 
-        ClientEntity client = clientMapper.clientDtoToClient(clientDTO);
         Optional <DietEntity> diet =  dietRepository.findOne(
 
                 where(
                         (root, query, criteriaBuilder) -> {
-                            return criteriaBuilder.and(criteriaBuilder.equal(criteriaBuilder.lower(root.get(DietEntity_.CLIENT_ID).get(ClientEntity_.LOGIN)), client.getLogin().toLowerCase()),
+                            return criteriaBuilder.and(criteriaBuilder.equal(criteriaBuilder.lower(root.get(DietEntity_.CLIENT_ID).get(ClientEntity_.LOGIN)), login.toLowerCase()),
                              criteriaBuilder.equal(root.get(DietEntity_.ACTIVE), true));
                         }
                 ));
@@ -78,28 +73,26 @@ public class DietService {
 
     public ResponseEntity<DietDTO> editDiet(DietDTO diet1){
 
-        DietEntity diet = dietMapper.dietDtoToDiet(diet1);
-        if(dietRepository.existsById(diet.getDietId())) {
+        DietEntity diet = dietRepository.findById(diet1.getDietId()).get();
+        if (diet==null) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
-            DietEntity diet2 =  dietRepository.findById(diet.getDietId()).get();
-            diet2.setDailyCalories(diet.getDailyCalories());
-            diet2.setDiabetes(diet.isDiabetes());
-            diet2.setActive(diet.isActive());
-            dietRepository.save(diet2);
-            return ResponseEntity.ok(diet1);
-        }
-        else return ResponseEntity.status(HttpStatus.NOT_FOUND).body(dietMapper.dietToDTO(diet));
+        if(!diet1.getLogin().equals(diet.getClientID().getLogin())) return ResponseEntity.status(HttpStatus.CONFLICT).build();
+
+        diet.setDailyCalories(diet.getDailyCalories());
+        diet.setDiabetes(diet.isDiabetes());
+        diet.setActive(diet.isActive());
+        dietRepository.save(diet);
+        return ResponseEntity.ok(diet1);
     }
 
 
     public ResponseEntity<DietDTO> setActive(DietDTO diet){
 
-
         if(dietRepository.existsById(diet.getDietId())) {
 
             ClientEntity client =  dietRepository.findById(diet.getDietId()).get().getClientID();
 
-            if(diet.getClientId().getClientId() != client.getClientId()) return ResponseEntity.status(HttpStatus.CONFLICT).body(diet);
+            if(!diet.getLogin().equals(client.getLogin())) return ResponseEntity.status(HttpStatus.CONFLICT).build();
 
             Optional <DietEntity> diet1 =  dietRepository.findOne(
 
@@ -120,7 +113,7 @@ public class DietService {
             return ResponseEntity.ok(diet);
         }
 
-        else return ResponseEntity.status(HttpStatus.CONFLICT).body(diet);
+        else return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
     }
 

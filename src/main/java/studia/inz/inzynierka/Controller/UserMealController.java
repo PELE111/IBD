@@ -2,8 +2,10 @@ package studia.inz.inzynierka.Controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import studia.inz.inzynierka.ApiRequest.AddMealToUser;
+import studia.inz.inzynierka.DTO.UserMealsDTO;
 import studia.inz.inzynierka.Entites.ClientEntity;
 import studia.inz.inzynierka.Entites.UserMealEntity;
 
@@ -20,8 +22,8 @@ public class UserMealController {
     private final UserMealService userMealService;
 
     @PostMapping(value = "/user")
-    public ResponseEntity<List<UserMealEntity>> getByUser(@RequestBody ClientEntity client){
-        return userMealService.getUserMeals(client);
+    public ResponseEntity<List<UserMealsDTO>> getByUser(Authentication authentication){
+        return userMealService.getUserMeals(authentication.getName());
     }
 
     @PostMapping(value = "/addmeal")

@@ -8,10 +8,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import studia.inz.inzynierka.ApiRequest.AddMealToUser;
+import studia.inz.inzynierka.DTO.UserMealsDTO;
 import studia.inz.inzynierka.Entites.ClientEntity;
 import studia.inz.inzynierka.Entites.ClientEntity_;
 import studia.inz.inzynierka.Entites.UserMealEntity;
 import studia.inz.inzynierka.Entites.UserMealEntity_;
+import studia.inz.inzynierka.Mapper.UserMealMapper;
 import studia.inz.inzynierka.Repos.ClientRepository;
 import studia.inz.inzynierka.Repos.MealRepository;
 import studia.inz.inzynierka.Repos.UserMealRepository;
@@ -28,20 +30,23 @@ public class UserMealService {
     private final UserMealRepository userMealRepository;
     private final MealRepository mealRepository;
     private final ClientRepository clientRepository;
+    private final UserMealMapper userMealMapper = UserMealMapper.INSTANCE;
 
 
 
-    public ResponseEntity<List<UserMealEntity>> getUserMeals(ClientEntity client){
+
+    public ResponseEntity<List<UserMealsDTO>> getUserMeals(String login){
+        if(!clientRepository.existsByLogin(login)) return ResponseEntity.notFound().build();
         List<UserMealEntity> userMeals = (userMealRepository.findAll(
                 where(
                         (root, query, criteriaBuilder) -> {
                             return criteriaBuilder.equal(
-                                    criteriaBuilder.lower(root.get(UserMealEntity_.CLIENT).get(ClientEntity_.LOGIN)), client.getLogin().toLowerCase()
+                                    criteriaBuilder.lower(root.get(UserMealEntity_.CLIENT).get(ClientEntity_.LOGIN)), login.toLowerCase()
                             );
                         }
                 )
         )).stream().toList();
-        return ResponseEntity.ok(userMeals);
+        return ResponseEntity.ok(userMealMapper.userMealsToDtos(userMeals));
     }
 
     public ResponseEntity<UserMealEntity> addMealToUser(AddMealToUser addMealToUser){
