@@ -1,10 +1,12 @@
 package studia.inz.inzynierka.Controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import studia.inz.inzynierka.Entites.ProductEntity;
-import studia.inz.inzynierka.Entites.ProductSpecEntity;
+import studia.inz.inzynierka.Models.DTO.ProductDto;
+import studia.inz.inzynierka.Models.DTO.ProductSpecDto;
 import studia.inz.inzynierka.Service.ProductSpecService;
 
 import java.util.List;
@@ -19,7 +21,13 @@ public class ProductSpecController {
 
 
     @PostMapping
-    public ResponseEntity<List<ProductSpecEntity>> getProductSpec(@RequestBody ProductEntity product){
-        return productSpecService.getByProduct(product);
+    public ResponseEntity<List<ProductSpecDto>> getProductSpec(@RequestBody ProductDto productDto, Authentication authentication) {
+
+        return productSpecService.getByProduct(productDto);
+    }
+
+    @GetMapping(value = "/search")
+    public ResponseEntity<List<ProductSpecDto>> searchProduct(String name, Pageable pageable, Authentication authentication) {
+        return productSpecService.searchByName(name, pageable);
     }
 }

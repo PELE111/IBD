@@ -1,7 +1,6 @@
 package studia.inz.inzynierka.Security;
 
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.patterns.IToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
@@ -18,7 +17,7 @@ import java.util.stream.Collectors;
 public class TokenService {
     private final JwtEncoder jwtEncoder;
 
-    public String generateToken(Authentication authentication){
+    public String generateToken(Authentication authentication) {
         Instant now = Instant.now();
         String scope = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -32,9 +31,5 @@ public class TokenService {
                 .build();
 
         return this.jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
-    }
-
-    public void expireToken(Authentication authentication){
-
     }
 }

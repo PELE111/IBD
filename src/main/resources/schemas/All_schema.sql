@@ -77,17 +77,6 @@ CREATE TABLE meal_ingredients
     amount float
 );
 
-INSERT INTO public.client (client_id, login, password)
-VALUES
-(1, 'login', 'haslo'),
-(2, 'klient', 'klient'),
-(3, 'klient1', 'klient1');
-
-INSERT INTO public.diet (diet_id, client_id, daily_calories, diabetes)
-VALUES
-(3, 2, 2000, true),
-(4, 1, 1500, false),
-(5, 3, 2500, false);
 
 INSERT INTO public.meal (meal_id, name)
 VALUES
@@ -113,13 +102,6 @@ VALUES
 (2, 1, 1, 2),
 (3, 1, 2, 250);
 
-
-
-
-
-INSERT INTO public.user_meal (user_meal_id, client_id, date, meal_id)
-VALUES
-(1, 2, '2022-12-01', 1);
 
 
 

@@ -3,10 +3,9 @@ package studia.inz.inzynierka.Controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import studia.inz.inzynierka.DTO.MealIngredientsDto;
-import studia.inz.inzynierka.Entites.MealEntity;
-import studia.inz.inzynierka.Entites.MealIngredientsEntity;
+import studia.inz.inzynierka.Models.DTO.MealIngredientsDto;
 import studia.inz.inzynierka.Service.MealIngredientsService;
 
 import java.util.List;
@@ -19,8 +18,9 @@ public class MealIngredientsController {
 
     private final MealIngredientsService mealIngredientsService;
 
-    @PostMapping(value = "/ingredients")
-    public ResponseEntity<List<MealIngredientsDto>> getMealIngredients(@RequestBody MealEntity meal){
-        return mealIngredientsService.getMealProducts(meal);
+    @GetMapping(value = "/ingredients")
+    public ResponseEntity<List<MealIngredientsDto>> getMealIngredients(@RequestParam int mealId, Authentication authentication) {
+        return mealIngredientsService.getMealProducts(mealId);
     }
+
 }
